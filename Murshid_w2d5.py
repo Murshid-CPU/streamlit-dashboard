@@ -11,7 +11,7 @@ st.set_page_config(
 
 # Load data
 df = pd.read_csv(
-    r"streamlit_dashboard/superstore_cleaned.csv"
+    r"superstore_cleaned.csv"
 )
 
 df["order_date"] = pd.to_datetime(df["order_date"])
