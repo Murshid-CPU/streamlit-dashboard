@@ -10,7 +10,8 @@ st.set_page_config(
 )
 
 # Load data
-df = pd.read_csv(r"cleaned_superstore.csv")
+df = pd.read_csv
+(r"cleaned_superstore.csv")
 
 
 df["order_date"] = pd.to_datetime(df["order_date"])
@@ -62,8 +63,8 @@ col1, col2, col3,col4 = st.columns(4)
 
 with col1:
     st.metric(
-        "Total sales_price",
-        f"${filtered['sales_price'].sum():,.0f}"
+        "Total sales",
+        f"${filtered['sales'].sum():,.0f}"
     )
 
 with col2:
@@ -99,15 +100,15 @@ with tab1:
             use_container_width=True
         )
 
-    # Monthly sales_price by Year
-    st.header("Monthly sales_price by Year", divider="green")
+    # Monthly sales by Year
+    st.header("Monthly sales by Year", divider="green")
 
     filtered["order_year"] = filtered["order_date"].dt.year
     filtered["month"] = filtered["order_date"].dt.to_period("M").astype(str)
 
     monthly_yr = (
         filtered
-        .groupby(["month", "order_year"])["sales_price"]
+        .groupby(["month", "order_year"])["sales"]
         .sum()
         .reset_index()
     )
@@ -115,10 +116,10 @@ with tab1:
     monthly_yr_fig = px.line(
         monthly_yr,
         x="month",
-        y="sales_price",
+        y="sales",
         color="order_year",
         markers=True,
-        title="Monthly sales_price Comparison by Year"
+        title="Monthly sales Comparison by Year"
     )
 
     st.plotly_chart(
@@ -143,7 +144,7 @@ with tab2:
         st.subheader("Top 10 Sub-Categories by Sales Price", divider="green")
 
         top_sub = (
-            filtered.groupby("sub_category")["sales_price"]
+            filtered.groupby("sub_category")["sales"]
             .sum()
             .nlargest(10)
             .reset_index()
@@ -151,7 +152,7 @@ with tab2:
 
         fig_bar = px.bar(
             top_sub,
-            x="sales_price",
+            x="sales",
             y="sub_category",
             orientation="h",
             title="Top 10 Sub-Categories"
@@ -164,7 +165,7 @@ with tab2:
 
         scatter_fig = px.scatter(
             filtered,
-            x="sales_price",
+            x="sales",
             y="profit",
             color="category",   # color by category
             hover_data=["sub_category"],
@@ -214,7 +215,7 @@ with tab4:
 
     #Profit Margin Alert
     profit_margin = np.mean(
-        (filtered["profit"] / filtered["sales_price"]) * 100
+        (filtered["profit"] / filtered["sales"]) * 100
     )
 
     if profit_margin > 20:
@@ -243,16 +244,16 @@ with tab4:
         f"ℹ️ {high_discount_orders} orders above the 75th percentile discount"
     )
 
-    # sales_price Outlier Alert using Z-Score
+    # sales Outlier Alert using Z-Score
     z_score = (
-        (filtered["sales_price"] - filtered["sales_price"].mean())
-        / filtered["sales_price"].std()
+        (filtered["sales"] - filtered["sales"].mean())
+        / filtered["sales"].std()
     )
 
     outliers = filtered[abs(z_score) > 2]
 
     st.warning(
-        f"⚠️ {len(outliers)} sales_price outliers detected (|z| > 2)"
+        f"⚠️ {len(outliers)} sales outliers detected (|z| > 2)"
     )
 
 
@@ -263,7 +264,7 @@ with tab4:
             [
                 "order_id",
                 "order_date",
-                "sales_price",
+                "sales",
                 "profit",
                 "region"
             ]
