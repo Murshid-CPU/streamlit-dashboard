@@ -13,6 +13,7 @@ st.set_page_config(
 df = pd.read_csv(r"superstore_cleaned.csv")
 
 
+
 df["order_date"] = pd.to_datetime(df["order_date"])
 order_year = df["order_date"].dt.year
 
@@ -143,7 +144,7 @@ with tab2:
         st.subheader("Top 10 Sub-Categories by Sales Price", divider="green")
 
         top_sub = (
-            filtered.groupby("sub_category")["sales"]
+            filtered.groupby("sub-category")["sales"]
             .sum()
             .nlargest(10)
             .reset_index()
@@ -152,7 +153,7 @@ with tab2:
         fig_bar = px.bar(
             top_sub,
             x="sales",
-            y="sub_category",
+            y="sub-category",
             orientation="h",
             title="Top 10 Sub-Categories"
         )
@@ -167,7 +168,7 @@ with tab2:
             x="sales",
             y="profit",
             color="category",   # color by category
-            hover_data=["sub_category"],
+            hover_data=["sub-category"],
             title="Sales Price vs Profit"
         )
 
