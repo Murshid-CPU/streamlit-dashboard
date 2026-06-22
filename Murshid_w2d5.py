@@ -10,12 +10,11 @@ st.set_page_config(
 )
 
 # Load data
-df = pd.read_csv
-(r"cleaned_superstore.csv")
+df = pd.read_csv(r"superstore_cleaned.csv")
 
 
 df["order_date"] = pd.to_datetime(df["order_date"])
-order_year = df["order_date"].dt.yeargit
+order_year = df["order_date"].dt.year
 
 # Sidebar Filters
 with st.sidebar:
